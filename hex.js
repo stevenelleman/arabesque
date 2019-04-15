@@ -1,6 +1,6 @@
 const triangleEdge = 20;
-const height = 400; 
-const width = 400;
+const height = 600; 
+const width = 600;
 
 function toRadians (angle) {
   return angle * (Math.PI / 180);
@@ -47,32 +47,32 @@ function hex(ctx, x0, y0) {
 	ctx.lineTo(x6, y6);
 }
 
-function hexLine(ctx, x0, y0) {
+function hexLine(ctx, x0, y0, shift) {
 	let xDelta = 2 * triangleEdge;
 	let x = x0;
 	while (x < width) {
 		console.log('X', x)
 		ctx.moveTo(x, y0)
 		hex(ctx, x, y0)
-		let x1 = x + xDelta;
+		let x1 = x + xDelta - shift;
 		ctx.moveTo(x1, y0);
 		hex(ctx, x1, y0);
 		let x2 = x1 + xDelta;
 		ctx.moveTo(x2, y0);
-		x = x2 + xDelta; 
+		x = x2 + xDelta - shift; 
 	}
 }
 
-function hexFunc(ctx) {
+function hexFunc(ctx, shift) {
 	const sin = Math.sin(toRadians(60));
 	let yDelta = 2 * (sin * triangleEdge);
 	let y = 0;
 	while (y < height) {
 		console.log('Y', y)
 		ctx.moveTo(0, y)
-		hexLine(ctx, 0 - 2*triangleEdge, y);
+		hexLine(ctx, 0 - 2*triangleEdge + shift, y, shift);
 		ctx.moveTo(triangleEdge, y + yDelta)
-		hexLine(ctx, triangleEdge, y + yDelta)
+		hexLine(ctx, triangleEdge, y + yDelta, shift)
 		y += 2 * yDelta; 
 	}
 	ctx.stroke();
@@ -81,4 +81,4 @@ function hexFunc(ctx) {
 
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-hexFunc(ctx); 
+hexFunc(ctx, 10); 
